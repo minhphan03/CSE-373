@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact name="project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/project_jar</output-path>
+    <root id="root">
+      <element id="archive" name="project.jar">
+        <element id="module-output" name="project" />
+        <element id="directory" name="data">
+          <element id="directory" name="huskymaps">
+            <element id="file-copy" path="$PROJECT_DIR$/data/huskymaps/places.tsv.gz" />
+            <element id="file-copy" path="$PROJECT_DIR$/data/huskymaps/seattle-small.osm.gz" />
+          </element>
+        </element>
+      </element>
+      <element id="library" level="project" name="slf4j.simple" />
+      <element id="library" level="project" name="fasterxml.jackson.core.databind" />
+      <element id="library" level="project" name="org.locationtech.spatial4j" />
+      <element id="library" level="project" name="io.javalin" />
+    </root>
+  </artifact>
+</component>
