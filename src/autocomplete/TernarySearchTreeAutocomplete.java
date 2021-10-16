@@ -1,6 +1,8 @@
 package autocomplete;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,14 +25,21 @@ public class TernarySearchTreeAutocomplete implements Autocomplete {
 
     @Override
     public void addAll(Collection<? extends CharSequence> terms) {
-
+        for (CharSequence word: terms) {
+            this.add(word.toString());
+        }
         // throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public List<CharSequence> allMatches(CharSequence prefix) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        List <CharSequence> matches = new ArrayList<>();
+        if (prefix.length() == 0) {
+            return matches;
+        }
+
+        return keysWithPrefix(prefix.toString());
+        // throw new UnsupportedOperationException("Not implemented yet");
     }
 
     /** Returns true if and only if this TST contains the given key. */
@@ -98,6 +107,37 @@ public class TernarySearchTreeAutocomplete implements Autocomplete {
         return node;
     }
 
+    public List<CharSequence> keysWithPrefix(String prefix) {
+        if (prefix == null) {
+            throw new NullPointerException("calls keysWithPrefix() with null argument");
+        } else if (prefix.length() == 0) {
+            throw new IllegalArgumentException("prefix must have length >= 1");
+        }
+        List<CharSequence> list = new LinkedList<>();
+        Node node = get(overallRoot, prefix, 0);
+        if (node == null) {
+            return list;
+        }
+        if (node.isTerm) {
+            list.add(prefix);
+        }
+        collect(node.mid, new StringBuilder(prefix), list);
+        return list;
+    }
+
+    private void collect(Node node, StringBuilder prefix, List<CharSequence> list) {
+        if (node == null) {
+            return;
+        }
+        collect(node.left, prefix, list);
+        if (node.isTerm) {
+            list.add(prefix.toString() + node.data);
+        }
+        prefix.append(node.data);
+        collect(node.mid, prefix, list);
+        prefix.deleteCharAt(prefix.length() - 1);
+        collect(node.right, prefix, list);
+    }
     /**
      * A search tree node representing a single character in an autocompletion term.
      */
