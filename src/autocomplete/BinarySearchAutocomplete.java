@@ -49,4 +49,5 @@ public class BinarySearchAutocomplete implements Autocomplete {
         }
         return result;
     }
+
 }
