@@ -34,6 +34,9 @@ public class BinarySearchAutocomplete implements Autocomplete {
             return result;
         }
         int start = Collections.binarySearch(this.terms, prefix, CharSequence::compare);
+
+        start = -(start + 1);
+
         if (start < 0) {
             return result;
         }

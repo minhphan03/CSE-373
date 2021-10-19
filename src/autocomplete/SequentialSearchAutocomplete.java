@@ -29,11 +29,15 @@ public class SequentialSearchAutocomplete implements Autocomplete {
 
     @Override
     public List<CharSequence> allMatches(CharSequence prefix) {
-        List<CharSequence> matches = new ArrayList<CharSequence>(); // create new arraylist to return
+        List<CharSequence> matches = new ArrayList<CharSequence>();
+        if (prefix.length() == 0) {
+            return matches;
+        }
+
         for (CharSequence word : terms) {
             if (prefix.length() <= word.length()) {
-                String word1 = word.subSequence(0, prefix.length()).toString();
-                if (prefix.toString().matches(word1)) {
+                CharSequence word1 = word.subSequence(0, prefix.length());
+                if (CharSequence.compare(prefix, word1) == 0) {
                     matches.add(word);
                 }
             }
