@@ -28,14 +28,17 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (contains(item)) {
             throw new IllegalArgumentException("Already contains " + item);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        items.add(new PriorityNode<>(item, priority));
     }
 
     @Override
     public boolean contains(T item) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (PriorityNode obj: items) {
+            if (obj.item().equals(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

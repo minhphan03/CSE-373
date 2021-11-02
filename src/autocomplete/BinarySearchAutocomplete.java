@@ -30,17 +30,18 @@ public class BinarySearchAutocomplete implements Autocomplete {
     @Override
     public List<CharSequence> allMatches(CharSequence prefix) {
         List<CharSequence> result = new ArrayList<>();
-        if (prefix == null || prefix.length()== 0) {
+        if (prefix == null || prefix.length() == 0) {
             return result;
         }
         int start = Collections.binarySearch(this.terms, prefix, CharSequence::compare);
-
-        start = -(start + 1);
+        if (!this.terms.contains(prefix)) {
+            start = -(start + 1);
+        }
 
         if (start < 0) {
             return result;
         }
-        for (CharSequence term : terms.subList(start,terms.size())){
+        for (CharSequence term : terms.subList(start, terms.size())) {
             if (prefix.length() <= term.length()) {
                 CharSequence part = term.subSequence(0, prefix.length());
                 if (CharSequence.compare(prefix, part) == 0) {
@@ -52,5 +53,4 @@ public class BinarySearchAutocomplete implements Autocomplete {
         }
         return result;
     }
-
 }
