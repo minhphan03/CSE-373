@@ -25,6 +25,7 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     @Override
     public void add(T item, double priority) {
+        // check contains
         if (contains(item)) {
             throw new IllegalArgumentException("Already contains " + item);
         }
@@ -33,7 +34,7 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     @Override
     public boolean contains(T item) {
-        for (PriorityNode obj: items) {
+        for (PriorityNode<T> obj: items) {
             if (obj.item().equals(item)) {
                 return true;
             }
