@@ -28,14 +28,21 @@ public class DoubleMapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     @Override
     public void add(T item, double priority) {
+        // using the HashMap to see if the item is in the tree
         if (contains(item)) {
             throw new IllegalArgumentException("Already contains " + item);
         }
+
+        // create a new key-pair value <Priority,Set> because items can be in the same priority level
+        // TreeMap is proficient in retrieving priority levels (ordered data structure)
         if (!priorityToItem.containsKey(priority)) {
             priorityToItem.put(priority, new HashSet<>());
         }
+        // get the Set that contains the priority level and add the item into the set for searching purposes
         Set<T> itemsWithPriority = priorityToItem.get(priority);
         itemsWithPriority.add(item);
+
+        //the HashMap helps to access the priority quickly of an item.
         itemToPriority.put(item, priority);
     }
 
