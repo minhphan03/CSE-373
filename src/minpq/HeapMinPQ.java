@@ -2,6 +2,7 @@ package minpq;
 
 import java.util.Comparator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.PriorityQueue;
 
 /**
@@ -28,14 +29,17 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (contains(item)) {
             throw new IllegalArgumentException("Already contains " + item);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.pq.add(new PriorityNode<>(item, priority));
     }
 
     @Override
     public boolean contains(T item) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (PriorityNode<T> obj : this.pq) {
+            if (obj.item().equals(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -43,8 +47,7 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return Objects.requireNonNull(this.pq.peek()).item();
     }
 
     @Override
@@ -52,22 +55,23 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return Objects.requireNonNull(this.pq.poll()).item();
     }
 
     @Override
     public void changePriority(T item, double priority) {
-        if (!contains(item)) {
-            throw new NoSuchElementException("PQ does not contain " + item);
+        for (PriorityNode<T> obj : this.pq) {
+            if (obj.item().equals(item)) {
+                this.pq.remove(obj);
+                this.pq.add(new PriorityNode<>(item, priority));
+                return;
+            }
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        throw new NoSuchElementException("PQ does not contain " + item);
     }
 
     @Override
     public int size() {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.pq.size();
     }
 }

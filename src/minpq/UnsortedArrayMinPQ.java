@@ -25,21 +25,31 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     @Override
     public void add(T item, double priority) {
-        // check contains
         if (contains(item)) {
             throw new IllegalArgumentException("Already contains " + item);
         }
-        items.add(new PriorityNode<>(item, priority));
+        this.items.add(new PriorityNode<>(item, priority));
     }
 
     @Override
     public boolean contains(T item) {
-        for (PriorityNode<T> obj: items) {
-            if (obj.item().equals(item)) {
+        for (PriorityNode<T> i:this.items) {
+            if (i.item().equals(item)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private PriorityNode<T> getMinNode(){
+        PriorityNode<T> min = this.items.get(0);
+        // look for min priority in items
+        for (PriorityNode<T> i:this.items){
+            if (i.priority() < min.priority()){
+                min = i;
+            }
+        }
+        return min;
     }
 
     @Override
@@ -47,8 +57,7 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return (T) getMinNode().item();
     }
 
     @Override
@@ -56,8 +65,9 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        PriorityNode<T> i = getMinNode();
+        this.items.remove(i);
+        return (T) i.item();
     }
 
     @Override
@@ -65,13 +75,21 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (!contains(item)) {
             throw new NoSuchElementException("PQ does not contain " + item);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        // look for item
+        for (PriorityNode<T> i: this.items) {
+            if (i.item().equals(item)) {
+                i.setPriority(priority);
+                return;
+            }
+        }
     }
 
     @Override
     public int size() {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        int s = 0;
+        for (PriorityNode i:this.items){
+            s++;
+        }
+        return s;
     }
 }
