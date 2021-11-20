@@ -67,8 +67,14 @@ public class GenerativeSeamFinder implements SeamFinder {
         private final Node source = new Node() {
             @Override
             public List<Edge<Node>> neighbors(Picture picture, EnergyFunction f) {
-                // TODO: Replace with your code
-                throw new UnsupportedOperationException("Not implemented yet");
+                List<Edge<Node>> result = new ArrayList<>(picture.height());
+                for (int j = 0; j < picture.height(); j += 1) {
+                    GenerativeSeamFinder.PixelGraph.Pixel to = new Pixel(0,j);
+                    result.add(new Edge<>(this, to, f.apply(picture, 0, j)));
+                }
+                return result;
+
+                // throw new UnsupportedOperationException("Not implemented yet");
             }
         };
         /**
@@ -77,8 +83,8 @@ public class GenerativeSeamFinder implements SeamFinder {
         private final Node sink = new Node() {
             @Override
             public List<Edge<Node>> neighbors(Picture picture, EnergyFunction f) {
-                // TODO: Replace with your code
-                throw new UnsupportedOperationException("Not implemented yet");
+                return List.of();
+                // throw new UnsupportedOperationException("Not implemented yet");
             }
         };
 
@@ -125,11 +131,15 @@ public class GenerativeSeamFinder implements SeamFinder {
             @Override
             public List<Edge<Node>> neighbors(Picture picture, EnergyFunction f) {
                 List<Edge<Node>> result = new ArrayList<>(3);
-                for (int z = y - 1; z <= y + 1; z += 1) {
-                    // Only if the neighbor is in the bounds of the picture.
-                    if (0 <= z && z < picture.height()) {
-                        Pixel to = new Pixel(x+1, z);
-                        result.add(new Edge<>(this, to, f.apply(picture, x+1, z)));
+                if (x == picture.width()-1) {
+                    result.add(new Edge<>(this, sink, 0));
+                } else {
+                    for (int z = y - 1; z <= y + 1; z += 1) {
+                        // Only if the neighbor is in the bounds of the picture.
+                        if (0 <= z && z < picture.height()) {
+                            Pixel to = new Pixel(x + 1, z);
+                            result.add(new Edge<>(this, to, f.apply(picture, x + 1, z)));
+                        }
                     }
                 }
                 return result;

@@ -1,5 +1,8 @@
 package graphs;
 
+import minpq.DoubleMapMinPQ;
+import minpq.ExtrinsicMinPQ;
+
 import java.util.*;
 
 /**
@@ -21,8 +24,36 @@ public class ToposortDAGSolver<V> implements ShortestPathSolver<V> {
     public ToposortDAGSolver(Graph<V> graph, V start) {
         this.edgeTo = new HashMap<>();
         this.distTo = new HashMap<>();
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+
+        Set<V> visited = new HashSet<>();
+        List<V> result = new ArrayList<>();
+
+        //start from every first [0][y] pixel
+        for (Edge<V> startEdge : graph.neighbors(start)) {
+            if (!visited.contains(startEdge.to)) {
+                dfsPostOrder(graph, start, visited, result);
+            }
+        }
+
+        edgeTo.put(start, null);
+        distTo.put(start, 0.0);
+
+        // Reverse the DFS postorder
+        Collections.reverse(result);
+
+        //shortest path from
+        for (V from: result) {
+            for (Edge<V> e : graph.neighbors(from)) {
+                V to = e.to;
+                double oldDist = distTo.getOrDefault(to, Double.POSITIVE_INFINITY);
+                double newDist = distTo.get(from) + e.weight;
+                if (newDist < oldDist) {
+                    edgeTo.put(to, e);
+                    distTo.put(to, newDist);
+                }
+            }
+        }
+        // throw new UnsupportedOperationException("Not implemented yet");
     }
 
     /**
@@ -34,8 +65,16 @@ public class ToposortDAGSolver<V> implements ShortestPathSolver<V> {
      * @param result  the destination for adding nodes.
      */
     private void dfsPostOrder(Graph<V> graph, V start, Set<V> visited, List<V> result) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        visited.add(start);
+        for (Edge<V> edge : graph.neighbors(start)) {
+            V neighbor = edge.to;
+            if (!visited.contains(neighbor)) {
+                dfsPostOrder(graph, neighbor, visited, result);
+            }
+        }
+        // Postorder: Add start after visiting all the neighbors.
+        result.add(start);
+        // throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
