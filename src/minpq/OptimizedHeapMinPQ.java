@@ -63,7 +63,7 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        PriorityNode minNode = this.items.get(1);
+        PriorityNode<T> minNode = this.items.get(1);
         // swap with right most leaf
         swap(1, this.size);
         // delete smallest (now leaf)
@@ -72,7 +72,7 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         this.size--;
         // sink root
         sink(1);
-        return (T) minNode.item();
+        return minNode.item();
     }
 
     @Override
@@ -89,7 +89,7 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         // sink lowest priority item
         sink(i);
         // add item with new priority
-        PriorityNode n = new PriorityNode<>(item,priority);
+        PriorityNode<T> n = new PriorityNode<>(item,priority);
         this.items.add(n);
         size++;
         // update index
@@ -103,9 +103,8 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     // Swim the item at the given index until the heap invariant is satisfied.
     private int swim(int index) {
-        int parentIndex=0;
         while (index > 1) {
-            parentIndex = index / 2;
+            int parentIndex = index / 2;
 
             // If the item at the parent index is greater, swap the two items.
             if (isGreater(parentIndex, index)) {

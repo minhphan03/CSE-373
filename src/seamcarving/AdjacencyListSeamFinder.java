@@ -64,7 +64,11 @@ public class AdjacencyListSeamFinder implements SeamFinder {
         private final EnergyFunction f;
         /**
          * Source {@link Node} for the adjacency list graph.
+         *
+         * Source nodes are super nodes that have no incoming edges but have all outgoing edges
+         * connected to picture.height() leftmost "pixels" in the picture
          */
+
         private final Node source = new Node() {
             @Override
             public List<Edge<Node>> neighbors(Picture picture, EnergyFunction f) {
@@ -78,7 +82,11 @@ public class AdjacencyListSeamFinder implements SeamFinder {
         };
         /**
          * Sink {@link Node} for the adjacency list graph.
+         *
+         * Sink nodes have no outgoing edges, only picture.height() incoming edges.
+         * Sink nodes are after the rightmost pixels in the pictures.
          */
+
         private final Node sink = new Node() {
             @Override
             public List<Edge<Node>> neighbors(Picture picture, EnergyFunction f) {
@@ -92,8 +100,12 @@ public class AdjacencyListSeamFinder implements SeamFinder {
          * @param picture the input picture.
          * @param f       the input energy function.
          */
+
         private PixelGraph(Picture picture, EnergyFunction f) {
+
+            // Initialization
             this.pixels = new Pixel[picture.width()][picture.height()];
+
             // Starting from the rightmost column, each pixel has only a single edge to the sink (with 0 weight).
             for (int y = 0; y < picture.height(); y += 1) {
                 Pixel from = new Pixel(picture.width() - 1, y);
