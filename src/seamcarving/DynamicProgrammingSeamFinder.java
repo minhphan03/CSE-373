@@ -1,6 +1,7 @@
 package seamcarving;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
 
             }
         }
+
         double[][] seamDynamic = new double[picture.width()][picture.height()];
         /**
          * backtracker is used to track the possible paths for later tracking:
@@ -92,10 +94,11 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
                 min_num = seamDynamic[picture.width() - 1][y];
             }
         }
-
-        seam.add(min_idx);
         int x = picture.width()-1;
         int y = min_idx;
+
+        // add the index of y to seam
+        seam.add(min_idx);
 
         int backtrack;
         while (x > 0) {
@@ -105,13 +108,10 @@ public class DynamicProgrammingSeamFinder implements SeamFinder {
             } else if (backtrack== 2) {
                 y = y+1;
             }
-            // add from the left
-            seam.add(0,y);
+            seam.add(y);
+            x -= 1;
         }
-        // first column: add itself
-        seam.add(0,y);
-
-
+        Collections.reverse(seam);
         return seam;
         //throw new UnsupportedOperationException("Not implemented yet");
     }

@@ -66,8 +66,8 @@ class SeamFinderMultiTest {
         test(new AdjacencyListSeamFinder(ToposortDAGSolver::new));
         System.out.println("\n=============================================");
 
-/*        System.out.println("Testing Dynamic Programming Seam Finder");
-        test(new DynamicProgrammingSeamFinder());*/
+        System.out.println("Testing Dynamic Programming Seam Finder");
+        test(new DynamicProgrammingSeamFinder());
     }
 
     /**
